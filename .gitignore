@@ -37,3 +37,5 @@ Thumbs.db
 
 broken.yaml
 test_suite.jsonl
+run_test.yaml
+run_test.jsonl

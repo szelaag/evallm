@@ -10,6 +10,12 @@ class TestCase(BaseModel):
     expected: str
 
 
+class CaseResult(BaseModel):
+    id: str
+    expected: str
+    actual: str
+
+
 def load_test_cases(suite: Suite) -> list[TestCase]:
     """
     Read path from Suite and return list of TestCase's with added ID
