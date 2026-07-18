@@ -9,6 +9,7 @@ authors = [
     {name = "szelaag", email = "business.szelag@email.com"}
 ]
 dependencies = [
+    "anthropic>=0.117.0",
     "click>=8.4.2",
     "pydantic>=2.13.4",
     "pyyaml>=6.0.3",
