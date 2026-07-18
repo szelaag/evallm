@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from anthropic import Anthropic
+from evallm.config import SystemUnderTest
 
 
 class Provider(ABC):
@@ -30,3 +31,27 @@ class AnthropicProvider(Provider):
             messages=[{"role": "user", "content": input}],
         )
         return response.content[0].text
+
+
+def create_provider(sut: SystemUnderTest) -> Provider:
+    """Build a provider instance from system-under-test config.
+
+    Args:
+        sut: System-under-test config with provider type and settings.
+
+    Returns:
+        A Provider implementation matching sut.provider.
+
+    Raises:
+        ValueError: If sut.provider is not a supported provider.
+    """
+    provider = sut.provider
+    if provider == "anthropic":
+        return AnthropicProvider(
+            model=sut.model,
+            system_prompt=sut.system_prompt,
+            temperature=sut.temperature,
+            max_tokens=sut.max_tokens,
+        )
+    else:
+        raise ValueError(f"{provider} is an unsupported provider")
