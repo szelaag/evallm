@@ -29,3 +29,6 @@ dev = [
 
 [project.scripts]
 evallm = "evallm.cli:cli"
+
+[tool.pytest.ini_options]
+python_classes = []
