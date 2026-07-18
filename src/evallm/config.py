@@ -1,5 +1,6 @@
 from typing import Literal
 from pathlib import Path
+from dataclasses import dataclass
 
 import yaml
 from pydantic import BaseModel, Field
@@ -26,15 +27,21 @@ class Config(BaseModel):
     suites: list[Suite] = Field(min_length=1)
 
 
-def load_config(path: Path) -> Config:
+@dataclass
+class LoadedConfig:
+    config: Config
+    base_dir: Path
+
+
+def load_config(path: Path) -> LoadedConfig:
     """Load and validate an evallm config file.
 
     Args:
         path: Path to the YAML config file.
 
     Returns:
-        A validated Config object.
+        A validated LoadedConfig object.
     """
     raw_text = path.read_text()
     data = yaml.safe_load(raw_text)
-    return Config(**data)
+    return LoadedConfig(config=Config(**data), base_dir=path.parent)

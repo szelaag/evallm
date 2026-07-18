@@ -16,12 +16,13 @@ class CaseResult(BaseModel):
     actual: str
 
 
-def load_test_cases(suite: Suite) -> list[TestCase]:
+def load_test_cases(suite: Suite, base_dir: Path) -> list[TestCase]:
     """
     Read path from Suite and return list of TestCase's with added ID
 
     Args:
         suite: suite from config, name and path to testfile
+        base_dir: Directory the config was loaded from; suite file paths resolve against it.
 
     Returns:
         list of TestCase's with added ID to each test from file
@@ -30,7 +31,7 @@ def load_test_cases(suite: Suite) -> list[TestCase]:
     """
     parsed_tests: list[TestCase] = []
 
-    with open(Path(suite.file), "r") as file:
+    with open(base_dir / suite.file) as file:
         for i, line in enumerate(file, start=1):
             test = json.loads(line)
 
