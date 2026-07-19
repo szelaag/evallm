@@ -78,8 +78,8 @@ def test_load_config_returns_config(tmp_path):
     }
     config_file = tmp_path / "test.yaml"
     config_file.write_text(yaml.dump(config_data))
-    config = load_config(config_file)
-    assert config.name == "test-eval"
+    loaded = load_config(config_file)
+    assert loaded.config.name == "test-eval"
 
 
 def test_load_config_missing_file_raises():
