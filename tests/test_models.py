@@ -2,58 +2,41 @@ import json
 from evallm.models import load_test_cases
 from evallm.models import SuiteResult, CaseResult, EvalResult
 from evallm.config import Suite
+import pytest
 
 
-def test_ids_start_from_one(tmp_path):
+@pytest.fixture
+def loader_suite(tmp_path) -> tuple[Suite, list[dict]]:
     test_data_raw = [
         {"input": "This product is amazing!", "expected": "positive"},
         {"input": "Terrible experience, would not recommend", "expected": "negative"},
         {"input": "It works as described", "expected": "neutral"},
     ]
 
-    test_data: list[str] = []
-
-    for test in test_data_raw:
-        test_data.append(json.dumps(test))
+    test_data = [json.dumps(d) for d in test_data_raw]
 
     test_file = tmp_path / "test.jsonl"
     test_file.write_text("\n".join(test_data))
     test_suite = Suite(name="test", file="test.jsonl", evaluator="exact_match")
+  
+    return test_suite, test_data_raw
+
+
+def test_ids_start_from_one(loader_suite, tmp_path):
+    test_suite, _ = loader_suite
 
     cases = load_test_cases(test_suite, tmp_path)
     assert cases[0].id == "test#1"
 
 
-def test_loads_all_cases(tmp_path):
-    test_data_raw = [
-        {"input": "This product is amazing!", "expected": "positive"},
-        {"input": "Terrible experience, would not recommend", "expected": "negative"},
-        {"input": "It works as described", "expected": "neutral"},
-    ]
-
-    test_data = [json.dumps(d) for d in test_data_raw]
-
-    test_file = tmp_path / "test.jsonl"
-    test_file.write_text("\n".join(test_data))
-    test_suite = Suite(name="test", file="test.jsonl", evaluator="exact_match")
-
+def test_loads_all_cases(loader_suite, tmp_path):
+    test_suite, test_data_raw = loader_suite
     cases = load_test_cases(test_suite, tmp_path)
     assert len(cases) == len(test_data_raw)
 
 
-def test_fields_match_source(tmp_path):
-    test_data_raw = [
-        {"input": "This product is amazing!", "expected": "positive"},
-        {"input": "Terrible experience, would not recommend", "expected": "negative"},
-        {"input": "It works as described", "expected": "neutral"},
-    ]
-
-    test_data = [json.dumps(d) for d in test_data_raw]
-
-    test_file = tmp_path / "test.jsonl"
-    test_file.write_text("\n".join(test_data))
-    test_suite = Suite(name="test", file="test.jsonl", evaluator="exact_match")
-
+def test_fields_match_source(loader_suite, tmp_path):
+    test_suite, test_data_raw = loader_suite
     cases = load_test_cases(test_suite, tmp_path)
     assert cases[0].input == test_data_raw[0]["input"]
     assert cases[0].expected == test_data_raw[0]["expected"]
