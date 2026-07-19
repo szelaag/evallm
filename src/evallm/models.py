@@ -2,6 +2,8 @@ from pydantic import BaseModel, Field
 from evallm.config import Suite
 import json
 from pathlib import Path
+from uuid import UUID
+from datetime import datetime
 
 
 class TestCase(BaseModel):
@@ -36,6 +38,26 @@ class SuiteResult(BaseModel):
         for case in self.cases:
             passed += 1 if case.eval_result.passed else 0
         return passed
+
+    @property
+    def pass_rate(self) -> float:
+        if self.total == 0:
+            return 0.0
+        return self.passed_count / self.total
+
+
+class RunResult(BaseModel):
+    id: UUID
+    timestamp: datetime
+    suites: list[SuiteResult]
+
+    @property
+    def total(self) -> int:
+        return sum(suite.total for suite in self.suites)
+
+    @property
+    def passed_count(self) -> int:
+        return sum(suite.passed_count for suite in self.suites)
 
     @property
     def pass_rate(self) -> float:

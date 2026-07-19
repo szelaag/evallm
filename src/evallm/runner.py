@@ -1,8 +1,10 @@
 from evallm.config import Config
 from evallm.providers import Provider
-from evallm.models import load_test_cases, CaseResult, SuiteResult
+from evallm.models import load_test_cases, CaseResult, SuiteResult, RunResult
 from evallm.evaluators import create_evaluator
 
+from uuid import uuid4
+from datetime import datetime
 from pathlib import Path
 
 
@@ -19,12 +21,14 @@ class Runner:
         self.provider = provider
         self.base_dir = base_dir
 
-    def run(self) -> list[SuiteResult]:
+    def run(self) -> RunResult:
         """Run all suites through the provider and collect results.
 
         Returns:
-            A list of SuiteResults, each with its case results and metrics.
+            RunResult, each with its case results and metrics.
         """
+        timestamp = datetime.now()
+
         suite_results: list[SuiteResult] = []
         for suite in self.config.suites:
             suite_cases: list[CaseResult] = []
@@ -44,4 +48,4 @@ class Runner:
                 )
             suite_results.append(SuiteResult(name=suite.name, cases=suite_cases))
 
-        return suite_results
+        return RunResult(id=uuid4(), timestamp=timestamp, suites=suite_results)

@@ -9,7 +9,7 @@ from evallm.providers import create_provider
 from evallm.runner import Runner
 from collections.abc import Callable
 from textwrap import dedent
-from evallm.reporting import show_suite_results, show_message
+from evallm.reporting import show_run_results, show_message
 
 
 def with_config(config_path: str, action: Callable[[LoadedConfig], None]) -> None:
@@ -49,8 +49,8 @@ def run(config_path: str) -> None:
     def do_run(loaded: LoadedConfig) -> None:
         provider = create_provider(loaded.config.system_under_test)
         runner = Runner(loaded.config, provider, loaded.base_dir)
-        results = runner.run()
-        show_suite_results(results)
+        result = runner.run()
+        show_run_results(result)
 
     with_config(config_path, do_run)
 

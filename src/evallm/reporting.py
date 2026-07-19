@@ -1,7 +1,8 @@
 from rich.console import Console
 from rich.table import Table, box
+from rich.panel import Panel
 
-from evallm.models import SuiteResult
+from evallm.models import RunResult
 
 
 console = Console()
@@ -26,7 +27,7 @@ def get_color(percent: float) -> str:
     elif percent > 0.75:
         return "chartreuse2"
     elif percent > 0.3:
-        return "orange_red1"
+        return "orange1"
     else:
         return "bright_red"
 
@@ -40,14 +41,22 @@ def get_progress_bar(percent: float, color: str | None = None, width: int = 12) 
     return f"{progress_bar}"
 
 
-def show_suite_results(suite_results: list[SuiteResult]) -> None:
-    """Shows rich table of suite results"""
+def show_run_results(run_result: RunResult) -> None:
+    """Shows rich table of run results"""
+    print()
+    console.print(
+        Panel(
+            f"Run from {run_result.timestamp.strftime('%Y-%m-%d %H:%M')} - [bold]{run_result.passed_count} / {run_result.total}[/] ({run_result.pass_rate:.0%})",
+            style=get_color(run_result.pass_rate),
+        )
+    )
+    suite_results = run_result.suites
     console.print()
     for suite_result in suite_results:
         color = get_color(suite_result.pass_rate)
         progress_bar = get_progress_bar(suite_result.pass_rate, color, width=12)
         console.rule(
-            f"Suite:[bold] {suite_result.name}[/] [bold {color}]{suite_result.passed_count}[dim] / [/]{suite_result.total}[/] {progress_bar}",
+            f"Suite:[bold] {suite_result.name}[/] [bold {color}]{suite_result.passed_count}[dim] / [/]{suite_result.total}[/] {progress_bar} [{color}]({suite_result.pass_rate:.0%})[/]",
             characters="━",
             style="grey37",
             align="left",

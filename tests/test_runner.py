@@ -37,10 +37,13 @@ def test_runner_orchestration(tmp_path):
     )
 
     runner = Runner(config, mock_provider, tmp_path)
-    results = runner.run()
+    result = runner.run()
 
-    assert len(results) == 1
-    assert results[0].total == 4
-    assert results[0].passed_count == 3
-    assert results[0].cases[0].actual == "positive"
-    assert results[0].cases[2].actual == "negative"
+    assert len(result.suites) == 1
+    assert result.suites[0].total == 4
+    assert result.suites[0].passed_count == 3
+    assert result.suites[0].cases[0].actual == "positive"
+    assert result.suites[0].cases[2].actual == "negative"
+
+    assert result.total == 4
+    assert result.passed_count == 3
