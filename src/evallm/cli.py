@@ -9,6 +9,7 @@ from evallm.providers import create_provider
 from evallm.runner import Runner
 from collections.abc import Callable
 from textwrap import dedent
+from evallm.reporting import show_suite_results, show_message
 
 
 def with_config(config_path: str, action: Callable[[LoadedConfig], None]) -> None:
@@ -34,7 +35,10 @@ def cli() -> None:
 @click.argument("config_path")
 def validate(config_path: str) -> None:
     """Validate an evallm config file."""
-    with_config(config_path, lambda loaded: click.echo("Config is valid"))
+    with_config(
+        config_path,
+        lambda loaded: show_message("Config is [bright_green bold]valid[/]"),
+    )
 
 
 @cli.command()
@@ -46,15 +50,7 @@ def run(config_path: str) -> None:
         provider = create_provider(loaded.config.system_under_test)
         runner = Runner(loaded.config, provider, loaded.base_dir)
         results = runner.run()
-        for suite_result in results:
-            click.echo(
-                f"Suite: {suite_result.name} - {suite_result.passed_count}/{suite_result.total} ({suite_result.pass_rate:.0%})"
-            )
-            for case in suite_result.cases:
-                verdict = "PASS" if case.eval_result.passed else "FAIL"
-                click.echo(
-                    f"  {verdict} | {case.id} | Expected: {case.expected} | Actual: {case.actual}"
-                )
+        show_suite_results(results)
 
     with_config(config_path, do_run)
 
@@ -91,4 +87,4 @@ def init(project_name: str) -> None:
     """)
     (path / "evallm.yaml").write_text(config_content)
     (path / "suites" / "example.jsonl").write_text(suite_content)
-    click.echo(f"Created project: {project_name}")
+    show_message(f"Created project [bright_green bold]{project_name}[/]")

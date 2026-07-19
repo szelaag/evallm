@@ -18,7 +18,7 @@ def loader_suite(tmp_path) -> tuple[Suite, list[dict]]:
     test_file = tmp_path / "test.jsonl"
     test_file.write_text("\n".join(test_data))
     test_suite = Suite(name="test", file="test.jsonl", evaluator="exact_match")
-  
+
     return test_suite, test_data_raw
 
 
