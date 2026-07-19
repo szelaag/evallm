@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from evallm.config import Suite
 import json
 from pathlib import Path
@@ -10,10 +10,38 @@ class TestCase(BaseModel):
     expected: str
 
 
+class EvalResult(BaseModel):
+    passed: bool
+    score: float = Field(ge=0.0, le=1.0)
+
+
 class CaseResult(BaseModel):
     id: str
     expected: str
     actual: str
+    eval_result: EvalResult
+
+
+class SuiteResult(BaseModel):
+    name: str
+    cases: list[CaseResult]
+
+    @property
+    def total(self) -> int:
+        return len(self.cases)
+
+    @property
+    def passed_count(self) -> int:
+        passed = 0
+        for case in self.cases:
+            passed += 1 if case.eval_result.passed else 0
+        return passed
+
+    @property
+    def pass_rate(self) -> float:
+        if self.total == 0:
+            return 0.0
+        return self.passed_count / self.total
 
 
 def load_test_cases(suite: Suite, base_dir: Path) -> list[TestCase]:

@@ -46,10 +46,15 @@ def run(config_path: str) -> None:
         provider = create_provider(loaded.config.system_under_test)
         runner = Runner(loaded.config, provider, loaded.base_dir)
         results = runner.run()
-        for result in results:
+        for suite_result in results:
             click.echo(
-                f"ID: {result.id} | Expected: {result.expected} | Actual: {result.actual}"
+                f"Suite: {suite_result.name} - {suite_result.passed_count}/{suite_result.total} ({suite_result.pass_rate:.0%})"
             )
+            for case in suite_result.cases:
+                verdict = "PASS" if case.eval_result.passed else "FAIL"
+                click.echo(
+                    f"  {verdict} | {case.id} | Expected: {case.expected} | Actual: {case.actual}"
+                )
 
     with_config(config_path, do_run)
 

@@ -1,6 +1,7 @@
 from evallm.config import Config
 from evallm.providers import Provider
-from evallm.models import load_test_cases, CaseResult
+from evallm.models import load_test_cases, CaseResult, SuiteResult
+from evallm.evaluators import create_evaluator
 
 from pathlib import Path
 
@@ -18,18 +19,29 @@ class Runner:
         self.provider = provider
         self.base_dir = base_dir
 
-    def run(self) -> list[CaseResult]:
+    def run(self) -> list[SuiteResult]:
         """Run all suites through the provider and collect results.
 
         Returns:
-            A list of CaseResult, one per test case across all suites.
+            A list of SuiteResults, each with its case results and metrics.
         """
-        test_results: list[CaseResult] = []
+        suite_results: list[SuiteResult] = []
         for suite in self.config.suites:
+            suite_cases: list[CaseResult] = []
             cases = load_test_cases(suite, self.base_dir)
+            evaluator = create_evaluator(suite)
             for case in cases:
+                expected = case.expected
                 actual = self.provider.generate(case.input)
-                test_results.append(
-                    CaseResult(id=case.id, expected=case.expected, actual=actual)
+                eval_result = evaluator.evaluate(expected, actual)
+                suite_cases.append(
+                    CaseResult(
+                        id=case.id,
+                        expected=expected,
+                        actual=actual,
+                        eval_result=eval_result,
+                    )
                 )
-        return test_results
+            suite_results.append(SuiteResult(name=suite.name, cases=suite_cases))
+
+        return suite_results
