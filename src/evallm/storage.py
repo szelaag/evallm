@@ -26,7 +26,7 @@ class SQLiteStorage(Storage):
         CREATE TABLE IF NOT EXISTS runs (
             id TEXT PRIMARY KEY,
             timestamp TEXT NOT NULL,
-            pass_rate REAL NOT NULL,
+            pass_rate REAL NOT NULL CHECK (pass_rate >= 0 AND pass_rate <= 1),
             passed_count INTEGER NOT NULL,
             total INTEGER NOT NULL
         )
@@ -37,7 +37,7 @@ class SQLiteStorage(Storage):
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             run_id TEXT NOT NULL,
             name TEXT NOT NULL,
-            pass_rate REAL NOT NULL,
+            pass_rate REAL NOT NULL CHECK (pass_rate >= 0 AND pass_rate <= 1),
             passed_count INTEGER NOT NULL,
             total INTEGER NOT NULL,
             FOREIGN KEY (run_id) REFERENCES runs(id)
@@ -51,8 +51,8 @@ class SQLiteStorage(Storage):
             case_label TEXT NOT NULL,
             expected TEXT NOT NULL,
             actual TEXT NOT NULL,
-            passed INTEGER NOT NULL,
-            score REAL NOT NULL,
+            passed INTEGER NOT NULL CHECK (passed IN (0, 1)),
+            score REAL NOT NULL CHECK (score >= 0 AND score <= 1),
             FOREIGN KEY (suite_id) REFERENCES suites(id)
         )
         """)
@@ -147,3 +147,7 @@ class SQLiteStorage(Storage):
                 )
             )
         return runs
+
+
+def create_storage(db_path: Path) -> Storage:
+    return SQLiteStorage(db_path)

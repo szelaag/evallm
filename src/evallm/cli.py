@@ -10,6 +10,7 @@ from evallm.runner import Runner
 from collections.abc import Callable
 from textwrap import dedent
 from evallm.reporting import show_run_results, show_message
+from evallm.storage import create_storage
 
 
 def with_config(config_path: str, action: Callable[[LoadedConfig], None]) -> None:
@@ -43,13 +44,21 @@ def validate(config_path: str) -> None:
 
 @cli.command()
 @click.argument("config_path")
-def run(config_path: str) -> None:
+@click.option(
+    "--db", default=None, help="Path to the database file (default: alongside config)"
+)
+def run(config_path: str, db: str | None) -> None:
     """Run evaluation suites and print results."""
 
     def do_run(loaded: LoadedConfig) -> None:
         provider = create_provider(loaded.config.system_under_test)
         runner = Runner(loaded.config, provider, loaded.base_dir)
         result = runner.run()
+
+        db_path = Path(db) if db else loaded.base_dir / "evallm.db"
+        storage = create_storage(db_path)
+        storage.save_run(result)
+
         show_run_results(result)
 
     with_config(config_path, do_run)
