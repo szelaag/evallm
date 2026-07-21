@@ -11,6 +11,8 @@ from collections.abc import Callable
 from textwrap import dedent
 from evallm.reporting import show_run_results, show_message
 from evallm.storage import create_storage
+from evallm.reports.html import generate_report
+from datetime import datetime
 
 
 def with_config(config_path: str, action: Callable[[LoadedConfig], None]) -> None:
@@ -45,9 +47,15 @@ def validate(config_path: str) -> None:
 @cli.command()
 @click.argument("config_path")
 @click.option(
-    "--db", default=None, help="Path to the database file (default: alongside config)"
+    "--db", "-d", default=None, help="Path to the database file (default: alongside config)"
 )
-def run(config_path: str, db: str | None) -> None:
+@click.option(
+    "--cases", "-c", is_flag=True, help="Show detailed results of cases in terminal"
+)
+@click.option(
+    "--report", "-r", is_flag=True, help="Generate HTML report in results/"
+)
+def run(config_path: str, db: str | None, cases: bool, report: bool) -> None:
     """Run evaluation suites and print results."""
 
     def do_run(loaded: LoadedConfig) -> None:
@@ -59,7 +67,15 @@ def run(config_path: str, db: str | None) -> None:
         storage = create_storage(db_path)
         storage.save_run(result)
 
-        show_run_results(result)
+        if report:
+            results_dir = loaded.base_dir / "results"
+            results_dir.mkdir(exist_ok=True)
+            timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            report_path = results_dir / f"report_{timestamp}.html"
+            generate_report(result, report_path)
+            show_message(f"Report saved to [bright_green bold]{report_path}[/]")
+
+        show_run_results(result, cases) # cases=True : detailed
 
     with_config(config_path, do_run)
 

@@ -41,7 +41,7 @@ def get_progress_bar(percent: float, color: str | None = None, width: int = 12) 
     return f"{progress_bar}"
 
 
-def show_run_results(run_result: RunResult) -> None:
+def show_run_results(run_result: RunResult, show_cases: bool = False) -> None:
     """Shows rich table of run results"""
     print()
     console.print(
@@ -61,21 +61,22 @@ def show_run_results(run_result: RunResult) -> None:
             style="grey37",
             align="left",
         )
-        table = Table(header_style="bold", box=box.SIMPLE_HEAVY)
-        table.add_column("ID", style="dim", justify="center")
-        table.add_column("Result", style="bold", justify="center")
-        table.add_column("Expected", style="", justify="center")
-        table.add_column("Actual", style="", justify="center")
-        for case_result in suite_result.cases:
-            result = (
-                f"[{get_color(1.0)}]PASS[/]"
-                if case_result.eval_result.passed
-                else f"[{get_color(0.0)}]FAIL[/]"
-            )
-            table.add_row(
-                case_result.id, result, case_result.expected, case_result.actual
-            )
-        console.print(table)
+        if show_cases:
+            table = Table(header_style="bold", box=box.SIMPLE_HEAVY)
+            table.add_column("ID", style="dim", justify="center")
+            table.add_column("Result", style="bold", justify="center")
+            table.add_column("Expected", style="", justify="center")
+            table.add_column("Actual", style="", justify="center")
+            for case_result in suite_result.cases:
+                result = (
+                    f"[{get_color(1.0)}]PASS[/]"
+                    if case_result.eval_result.passed
+                    else f"[{get_color(0.0)}]FAIL[/]"
+                )
+                table.add_row(
+                    case_result.id, result, case_result.expected, case_result.actual
+                )
+            console.print(table)
 
 
 def show_message(message: str) -> None:
