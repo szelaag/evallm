@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>evallm report</title>
+    <style>
+        :root {
+            --bg: #0c0e12;
+            --surface: #14171e;
+            --surface-2: #191d25;
+            --border: #232833;
+            --border-strong: #313846;
+            --text: #edeff3;
+            --text-dim: #8a92a1;
+            --text-faint: #545c6b;
+            --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, monospace;
+            --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+            --pass: #3fb950;
+            --fail: #f85149;
+            --fail-dim: #f8514918;
+            --warn: #d29922;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg); color: var(--text); font-family: var(--sans);
+            line-height: 1.5; padding: 56px 44px; max-width: 1040px; margin: 0 auto;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Hero */
+        .hero {
+            display: flex; align-items: flex-end; justify-content: space-between;
+            gap: 24px; padding-bottom: 26px; border-bottom: 1px solid var(--border-strong);
+            flex-wrap: wrap;
+        }
+        .hero-left { display: flex; flex-direction: column; gap: 12px; }
+        .hero h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.015em; }
+        .hero-meta {
+            font-family: var(--mono); font-size: 12px; color: var(--text-dim);
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .hero-meta .label { color: var(--text-faint); display: inline-block; width: 38px; }
+        .score { display: flex; align-items: flex-end; gap: 12px; line-height: 1; }
+        .score-big { font-family: var(--mono); font-size: 40px; font-weight: 600; line-height: 0.85; letter-spacing: -0.02em; }
+        .score-fraction { font-family: var(--mono); font-size: 13px; color: var(--text-dim); }
+
+        /* Summary */
+        .summary { display: flex; margin: 0 0 8px 0; border-bottom: 1px solid var(--border); }
+        .summary-cell { flex: 1; padding: 20px 24px 20px 0; margin-right: 24px; border-right: 1px solid var(--border); }
+        .summary-cell:last-child { border-right: none; margin-right: 0; }
+        .summary-cell .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 8px; }
+        .summary-cell .v { font-family: var(--mono); font-size: 24px; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+        .summary-cell .v.fail-c { color: var(--fail); }
+
+        /* Suite */
+        .suite { margin-top: 52px; }
+        .suite-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 26px; }
+        .suite-name { font-size: 17px; font-weight: 600; font-family: var(--mono); letter-spacing: -0.01em; color: var(--text); }
+        .suite-stat { font-family: var(--mono); font-size: 12.5px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+        .suite-bar { flex: 1; height: 3px; background: var(--surface-2); overflow: hidden; max-width: 160px; margin-left: auto; align-self: center; }
+        .suite-bar-fill { height: 100%; background: var(--border-strong); }
+
+        /* Suite body: matrix left, stats right - aligned tops */
+        .suite-body { display: flex; gap: 56px; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; }
+
+        .panel-title {
+            font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+            text-transform: uppercase; color: var(--text-faint);
+            margin-bottom: 16px; height: 12px;
+        }
+
+        /* Confusion matrix - table for reliable alignment */
+        .cm-block { display: flex; flex-direction: column; }
+        .cm-layout { display: flex; align-items: stretch; }
+        .cm-ylabel {
+            font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em;
+            text-transform: uppercase; color: var(--text-faint);
+            writing-mode: vertical-rl; transform: rotate(180deg);
+            display: flex; align-items: center; justify-content: center;
+            padding-bottom: 24px; margin-right: 10px;
+        }
+        .cm-right { display: flex; flex-direction: column; }
+        .cm-xlabel {
+            font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em;
+            text-transform: uppercase; color: var(--text-faint);
+            margin-bottom: 8px;
+        }
+        table.cm { border-collapse: separate; border-spacing: 3px; font-family: var(--mono); }
+        table.cm th.cm-col {
+            font-size: 11px; font-weight: 400; color: var(--text-dim);
+            padding: 0 0 6px 0; text-align: center; vertical-align: bottom;
+            white-space: nowrap;
+        }
+        table.cm th.cm-row {
+            font-size: 11px; font-weight: 400; color: var(--text-dim);
+            padding: 0 12px 0 0; text-align: right; white-space: nowrap; vertical-align: middle;
+        }
+        table.cm td.cm-cell {
+            width: 56px; height: 48px; text-align: center; vertical-align: middle;
+            font-size: 13px; font-variant-numeric: tabular-nums; color: var(--text);
+            background: var(--surface); border-radius: 3px;
+        }
+        table.cm td.cm-cell.zero { color: #363d4c; background: #10131a; }
+        table.cm th.cm-corner { padding: 0; }
+
+        /* Stats panel - aligned to matrix top via same panel-title height */
+        .stats-block { display: flex; flex-direction: column; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 40px; }
+        .stat .sk { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 6px; }
+        .stat .sv { font-family: var(--mono); font-size: 22px; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; line-height: 1; }
+        .stat .sv.muted { color: var(--text-dim); }
+
+        /* Cases collapsible */
+        details.cases { border-top: 1px solid var(--border); margin-top: 4px; }
+        details.cases summary {
+            list-style: none; cursor: pointer; padding: 14px 0;
+            font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+            text-transform: uppercase; color: var(--text-dim);
+            display: flex; align-items: center; gap: 9px;
+        }
+        details.cases summary::-webkit-details-marker { display: none; }
+        details.cases summary::before { content: "▸"; color: var(--text-faint); font-size: 9px; }
+        details.cases[open] summary::before { content: "▾"; }
+        details.cases summary:hover { color: var(--text); }
+        table.cases { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 10px; }
+        table.cases thead th {
+            text-align: left; font-family: var(--mono); font-size: 10px;
+            letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint);
+            font-weight: 500; padding: 8px 16px 8px 0; border-bottom: 1px solid var(--border);
+        }
+        table.cases tbody td {
+            padding: 9px 16px 9px 0; border-bottom: 1px solid var(--border);
+            font-family: var(--mono); color: var(--text-dim);
+        }
+        table.cases tbody tr:last-child td { border-bottom: none; }
+        table.cases tbody tr.is-fail td { color: var(--text); }
+        td.case-id { color: var(--text-faint); }
+        .rmark { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; }
+        .rmark.pass { color: var(--text-faint); }
+        .rmark.fail { color: var(--fail); background: var(--fail-dim); padding: 2px 8px; border-radius: 3px; }
+
+        footer {
+            margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between;
+            font-family: var(--mono); font-size: 11px; color: var(--text-faint);
+        }
+        footer .brand { color: var(--text-dim); letter-spacing: 0.04em; }
+    </style>
+</head>
+<body>
+    {% set run_pct = run.pass_rate * 100 %}
+    {% set run_color = '#3fb950' if run.pass_rate >= 0.75 else '#d29922' if run.pass_rate >= 0.4 else '#f85149' %}
+    <header class="hero">
+        <div class="hero-left">
+            <h1>Run results</h1>
+            <div class="hero-meta">
+                <span><span class="label">id</span>{{ run.id }}</span>
+                <span><span class="label">time</span>{{ run.timestamp.strftime('%Y-%m-%d %H:%M') }}</span>
+            </div>
+        </div>
+        <div class="score">
+            <span class="score-big" style="color: {{ run_color }}">{{ '%.0f' | format(run_pct) }}%</span>
+            <span class="score-fraction">{{ run.passed_count }} / {{ run.total }} passed</span>
+        </div>
+    </header>
+
+    <div class="summary">
+        <div class="summary-cell"><div class="k">Suites</div><div class="v">{{ run.suites | length }}</div></div>
+        <div class="summary-cell"><div class="k">Total cases</div><div class="v">{{ run.total }}</div></div>
+        <div class="summary-cell"><div class="k">Passed</div><div class="v">{{ run.passed_count }}</div></div>
+        <div class="summary-cell"><div class="k">Failed</div><div class="v fail-c">{{ run.total - run.passed_count }}</div></div>
+    </div>
+
+    {% for suite in run.suites %}
+    {% set s_pct = suite.pass_rate * 100 %}
+    {% set cm = matrices[suite.name] %}
+    {% set n = cm.classes | length %}
+    {% set maxdiag = namespace(v=1) %}
+    {% set maxerr = namespace(v=1) %}
+    {% for e in cm.classes %}{% for a in cm.classes %}
+        {% if e == a and cm.matrix[e][a] > maxdiag.v %}{% set maxdiag.v = cm.matrix[e][a] %}{% endif %}
+        {% if e != a and cm.matrix[e][a] > maxerr.v %}{% set maxerr.v = cm.matrix[e][a] %}{% endif %}
+    {% endfor %}{% endfor %}
+    {% set fail_count = suite.total - suite.passed_count %}
+
+    <section class="suite">
+        <div class="suite-head">
+            <span class="suite-name">{{ suite.name }}</span>
+            <span class="suite-stat">{{ suite.passed_count }}/{{ suite.total }} &middot; {{ '%.0f' | format(s_pct) }}%</span>
+            <div class="suite-bar"><div class="suite-bar-fill" style="width: {{ s_pct }}%"></div></div>
+        </div>
+
+        <div class="suite-body">
+            <div class="cm-block">
+                <div class="panel-title">Confusion matrix</div>
+                <div class="cm-layout">
+                    <div class="cm-ylabel">expected</div>
+                    <div class="cm-right">
+                        <div class="cm-xlabel">actual &rarr;</div>
+                        <table class="cm">
+                            <thead>
+                                <tr>
+                                    <th class="cm-corner"></th>
+                                    {% for a in cm.classes %}<th class="cm-col">{{ a }}</th>{% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for e in cm.classes %}
+                                <tr>
+                                    <th class="cm-row">{{ e }}</th>
+                                    {% for a in cm.classes %}
+                                    {% set val = cm.matrix[e][a] %}
+                                    {% if val == 0 %}
+                                        <td class="cm-cell zero">0</td>
+                                    {% elif e == a %}
+                                        {% set inten = 0.20 + 0.55 * (val / maxdiag.v) %}
+                                        <td class="cm-cell" style="background: rgba(63,185,80,{{ '%.3f'|format(inten) }}); color: #e4f8e9;">{{ val }}</td>
+                                    {% else %}
+                                        {% set inten = 0.22 + 0.53 * (val / maxerr.v) %}
+                                        <td class="cm-cell" style="background: rgba(248,81,73,{{ '%.3f'|format(inten) }}); color: #ffe4e2;">{{ val }}</td>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-block">
+                <div class="panel-title">Statistics</div>
+                <div class="stats-grid">
+                    <div class="stat"><div class="sk">Accuracy</div><div class="sv">{{ '%.0f'|format(cm.accuracy * 100) }}%</div></div>
+                    <div class="stat"><div class="sk">Classes</div><div class="sv muted">{{ n }}</div></div>
+                    <div class="stat"><div class="sk">Correct</div><div class="sv">{{ cm.correct }}</div></div>
+                    <div class="stat"><div class="sk">Errors</div><div class="sv {{ 'muted' if cm.total - cm.correct == 0 else '' }}">{{ cm.total - cm.correct }}</div></div>
+                </div>
+            </div>
+        </div>
+
+        <details class="cases" {% if suite.total <= 20 %}open{% endif %}>
+            <summary>{{ suite.total }} cases{% if fail_count %} &middot; {{ fail_count }} failed{% endif %}</summary>
+            <table class="cases">
+                <thead>
+                    <tr><th>Case</th><th>Result</th><th>Expected</th><th>Actual</th></tr>
+                </thead>
+                <tbody>
+                    {% for case in suite.cases %}
+                    <tr class="{{ 'is-fail' if not case.eval_result.passed else '' }}">
+                        <td class="case-id">{{ case.id }}</td>
+                        <td>
+                            {% if case.eval_result.passed %}
+                            <span class="rmark pass">PASS</span>
+                            {% else %}
+                            <span class="rmark fail">FAIL</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ case.expected }}</td>
+                        <td>{{ case.actual }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </details>
+    </section>
+    {% endfor %}
+
+    <footer>
+        <span class="brand">evallm</span>
+        <span>evaluation report</span>
+    </footer>
+</body>
+</html>
