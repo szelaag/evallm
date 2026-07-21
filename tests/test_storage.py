@@ -37,6 +37,16 @@ def _sample_run() -> RunResult:
     )
 
 
+def _assert_run_equal(loaded: RunResult, expected: RunResult) -> None:
+    assert loaded is not None
+    assert loaded.id == expected.id
+    assert loaded.timestamp == expected.timestamp
+    assert loaded.total == expected.total
+    assert loaded.passed_count == expected.passed_count
+    assert loaded.pass_rate == expected.pass_rate
+    assert len(loaded.suites) == len(expected.suites)
+    assert loaded.suites[0].passed_count == expected.suites[0].passed_count
+
 def test_sqlite_storage_round_trip(tmp_path):
 
     run = _sample_run()
@@ -44,14 +54,7 @@ def test_sqlite_storage_round_trip(tmp_path):
     storage.save_run(run)
     loaded = storage.get_run(run.id)
 
-    assert loaded is not None
-    assert loaded.id == run.id
-    assert loaded.timestamp == run.timestamp
-    assert loaded.total == run.total
-    assert loaded.passed_count == run.passed_count
-    assert loaded.pass_rate == run.pass_rate
-    assert len(loaded.suites) == len(run.suites)
-    assert loaded.suites[0].passed_count == run.suites[0].passed_count
+    _assert_run_equal(loaded, run)
 
 
 def test_get_runs_returns_all(tmp_path):
@@ -72,3 +75,20 @@ def test_get_runs_returns_all(tmp_path):
 def test_get_run_nonexistent_returns_none(tmp_path):
     storage = SQLiteStorage(tmp_path / "test.db")
     assert storage.get_run(uuid4()) is None
+
+
+def test_get_run_by_prefix_returns_correct_run(tmp_path):
+    run = _sample_run()
+    storage = SQLiteStorage(tmp_path / "test.db")
+    storage.save_run(run)
+    loaded = storage.get_run_by_prefix(str(run.id)[:8])
+
+    _assert_run_equal(loaded, run)
+
+
+def test_get_run_by_prefix_returns_none_if_nonexistent(tmp_path):
+    run = _sample_run()
+    storage = SQLiteStorage(tmp_path / "test.db")
+    storage.save_run(run)
+    loaded = storage.get_run_by_prefix("nonexistentrun")
+    assert loaded is None

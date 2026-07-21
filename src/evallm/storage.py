@@ -6,13 +6,20 @@ import sqlite3
 from datetime import datetime
 
 
+class AmbiguousPrefixError(Exception):
+    """Raised when a run ID prefix matches more than one run."""
+    pass
+
+
 class Storage(ABC):
     @abstractmethod
     def save_run(self, run: RunResult) -> None: ...
     @abstractmethod
-    def get_runs(self) -> list[RunResult]: ...
+    def get_runs(self, limit: int = 20) -> list[RunResult]: ...
     @abstractmethod
     def get_run(self, id: UUID) -> RunResult | None: ...
+    @abstractmethod
+    def get_run_by_prefix(self, prefix: str) -> RunResult | None: ...
 
 
 class SQLiteStorage(Storage):
@@ -134,9 +141,9 @@ class SQLiteStorage(Storage):
             suites=self._get_suites(row[0]),
         )
 
-    def get_runs(self) -> list[RunResult]:
+    def get_runs(self, limit: int = 20) -> list[RunResult]:
         runs: list[RunResult] = []
-        cursor = self.conn.execute("SELECT * FROM runs ORDER BY timestamp DESC")
+        cursor = self.conn.execute("SELECT * FROM runs ORDER BY timestamp DESC LIMIT ?", (limit, ))
         rows = cursor.fetchall()
         for row in rows:
             runs.append(
@@ -147,6 +154,24 @@ class SQLiteStorage(Storage):
                 )
             )
         return runs
+    
+    def get_run_by_prefix(self, prefix: str) -> RunResult | None:
+        pattern = prefix + "%"
+        cursor = self.conn.execute("SELECT * FROM runs WHERE id LIKE ?", (pattern,))
+        rows = cursor.fetchall()
+
+        if len(rows) == 0:
+            return None
+        elif len(rows) > 1:
+            raise AmbiguousPrefixError(f"Prefix: '{prefix}' matches {len(rows)} runs")
+        else:
+            row = rows[0]
+            return RunResult(
+                id=UUID(row[0]),
+                timestamp=datetime.fromisoformat(row[1]),
+                suites=self._get_suites(row[0]),
+            )
+        
 
 
 def create_storage(db_path: Path) -> Storage:
