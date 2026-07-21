@@ -9,10 +9,19 @@ from evallm.providers import create_provider
 from evallm.runner import Runner
 from collections.abc import Callable
 from textwrap import dedent
-from evallm.reporting import show_run_results, show_message
-from evallm.storage import create_storage
+from evallm.reporting import show_run_results, show_message, show_history
+from evallm.storage import create_storage, AmbiguousPrefixError
 from evallm.reports.html import generate_report
-from datetime import datetime
+from evallm.models import RunResult
+
+
+def _write_report(run: RunResult, base_dir: Path) -> None:
+    """Render an HTML report for a run into base_dir/results/, named by run ID."""
+    results_dir = base_dir / "results"
+    results_dir.mkdir(exist_ok=True)
+    report_path = results_dir / f"report_{str(run.id)[:8]}.html"
+    generate_report(run, report_path)
+    show_message(f"Report saved to [bright_green bold]{report_path}[/]")
 
 
 def with_config(config_path: str, action: Callable[[LoadedConfig], None]) -> None:
@@ -68,15 +77,10 @@ def run(config_path: str, db: str | None, cases: bool, report: bool) -> None:
         storage = create_storage(db_path)
         storage.save_run(result)
 
-        if report:
-            results_dir = loaded.base_dir / "results"
-            results_dir.mkdir(exist_ok=True)
-            timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            report_path = results_dir / f"report_{timestamp}.html"
-            generate_report(result, report_path)
-            show_message(f"Report saved to [bright_green bold]{report_path}[/]")
-
         show_run_results(result, cases)  # cases=True : detailed
+
+        if report:
+            _write_report(result, loaded.base_dir)
 
     with_config(config_path, do_run)
 
@@ -114,3 +118,48 @@ def init(project_name: str) -> None:
     (path / "evallm.yaml").write_text(config_content)
     (path / "suites" / "example.jsonl").write_text(suite_content)
     show_message(f"Created project [bright_green bold]{project_name}[/]")
+
+
+@cli.command()
+@click.option(
+    "--db",
+    "-d",
+    default=None,
+    help="Path to the database file, looks in cwd by default",
+)
+@click.option(
+    "--limit", "-n", default=20, help="Limit to how many runs to display", type=int
+)
+def history(db: str | None, limit: int) -> None:
+    """Show past evaluation runs."""
+    db_path = Path(db) if db else Path("evallm.db")
+    storage = create_storage(db_path)
+    runs = storage.get_runs(limit)
+    show_history(runs)
+
+
+@cli.command()
+@click.argument("run_id")
+@click.option(
+    "--db",
+    "-d",
+    default=None,
+    help="Path to the database file, looks in cwd by default",
+)
+@click.option(
+    "--cases", "-c", is_flag=True, help="Show detailed results of cases in terminal"
+)
+@click.option("--report", "-r", is_flag=True, help="Generate HTML report in results/")
+def show(run_id: str, db: str | None, cases: bool, report: bool) -> None:
+    """Show a past run by ID (full or unique prefix)."""
+    db_path = Path(db) if db else Path("evallm.db")
+    storage = create_storage(db_path)
+    try:
+        run = storage.get_run_by_prefix(run_id)
+    except AmbiguousPrefixError as e:
+        raise click.ClickException(str(e))
+    if run is None:
+        raise click.ClickException(f"No run found matching '{run_id}'")
+    if report:
+        _write_report(run, Path.cwd())
+    show_run_results(run, cases)
