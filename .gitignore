@@ -41,3 +41,4 @@ run_test.yaml
 run_test.jsonl
 
 *.db
+results/
