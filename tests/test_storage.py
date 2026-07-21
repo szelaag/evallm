@@ -1,7 +1,8 @@
-from evallm.storage import SQLiteStorage
+from evallm.storage import SQLiteStorage, AmbiguousPrefixError
 from evallm.models import RunResult, SuiteResult, CaseResult, EvalResult
 from uuid import uuid4
 from datetime import datetime
+import pytest
 
 
 def _case(cid: str, expected: str, actual: str, passed: bool) -> CaseResult:
@@ -93,3 +94,11 @@ def test_get_run_by_prefix_returns_none_if_nonexistent(tmp_path):
     storage.save_run(run)
     loaded = storage.get_run_by_prefix("nonexistentrun")
     assert loaded is None
+
+
+def test_get_run_by_prefix_raises_on_ambiguous(tmp_path):
+    storage = SQLiteStorage(tmp_path / "test.db")
+    storage.save_run(_sample_run())
+    storage.save_run(_sample_run())
+    with pytest.raises(AmbiguousPrefixError):
+        storage.get_run_by_prefix("")
