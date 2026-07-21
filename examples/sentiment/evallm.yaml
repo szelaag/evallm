@@ -1,0 +1,22 @@
+name: sentiment-classification
+description: Sentiment classification across basic, edge-case, and sarcastic reviews
+
+system_under_test:
+  provider: anthropic
+  model: claude-haiku-4-5-20251001
+  system_prompt: |
+    Classify the sentiment of the review as one of: positive, negative, neutral.
+    Return only the label, nothing else.
+  temperature: 0.0
+  max_tokens: 100
+
+suites:
+  - name: basic
+    file: suites/basic.jsonl
+    evaluator: exact_match
+  - name: edge_cases
+    file: suites/edge.jsonl
+    evaluator: exact_match
+  - name: sarcasm
+    file: suites/sarcasm.jsonl
+    evaluator: exact_match

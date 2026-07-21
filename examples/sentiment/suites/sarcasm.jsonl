@@ -1,0 +1,40 @@
+{"input": "Oh fantastic, it died the moment the warranty expired. Impeccable timing.", "expected": "negative"}
+{"input": "Sure, who doesn't love waiting two hours for a table they reserved weeks ago?", "expected": "negative"}
+{"input": "Wow, a charger that stops working in three days. Truly cutting-edge engineering.", "expected": "negative"}
+{"input": "Great, another update that removed the one feature I actually used. Bravo.", "expected": "negative"}
+{"input": "Amazing, the 'waterproof' jacket soaked through in a light drizzle. Shocking.", "expected": "negative"}
+{"input": "Yeah, nothing says luxury hotel like a cold shower and a broken elevator.", "expected": "negative"}
+{"input": "Love how the 'noise-cancelling' headphones cancel exactly zero noise. Genius.", "expected": "negative"}
+{"input": "Perfect, the screen cracked in my pocket. Gorilla Glass, my foot.", "expected": "negative"}
+{"input": "Oh joy, they delivered it to the wrong address for the third time. Consistent.", "expected": "negative"}
+{"input": "Brilliant, a laptop that overheats if you dare to open two browser tabs.", "expected": "negative"}
+{"input": "Honestly? I braced for junk and this thing is embarrassingly good. Take my money.", "expected": "positive"}
+{"input": "Ugh, fine, I'll admit it: best purchase I've made all year. Don't tell my wallet.", "expected": "positive"}
+{"input": "Great, now I have to return it because it works too well and shames my old one.", "expected": "positive"}
+{"input": "Oh no, a vacuum that actually picks up dirt. How will I ever cope.", "expected": "positive"}
+{"input": "Terrible, truly awful, that I now have to recommend this to literally everyone.", "expected": "positive"}
+{"input": "Wonderful, an airline that lost my bag and then found new ways to not care.", "expected": "negative"}
+{"input": "Fantastic customer service, if your goal is to be hung up on four times.", "expected": "negative"}
+{"input": "Oh sure, 'all-day battery' — if your day happens to end at 11am.", "expected": "negative"}
+{"input": "Loved paying premium prices for a hotel room with a view of a brick wall.", "expected": "negative"}
+{"input": "What a treat, the app crashes every time I try to actually save anything.", "expected": "negative"}
+{"input": "Incredible, I'm genuinely annoyed at how much I love this stupid little gadget.", "expected": "positive"}
+{"input": "Oh great, the 'quiet' dishwasher that sounds like a jet taking off. Lovely.", "expected": "negative"}
+{"input": "Well played, chef — a steak so overcooked I could resole my shoes with it.", "expected": "negative"}
+{"input": "Sure, buy the extended warranty, it'll be just as useless as the product.", "expected": "negative"}
+{"input": "Fine, you win, this ugly little coffee maker makes better coffee than my old fancy one.", "expected": "positive"}
+{"input": "Oh wonderful, a 'smart' TV too dumb to remember the Wi-Fi password overnight.", "expected": "negative"}
+{"input": "How lovely, the assembly instructions were clearly written by someone who hates me.", "expected": "negative"}
+{"input": "I hate to say it — really, I do — but this thing is annoyingly perfect.", "expected": "positive"}
+{"input": "Marvelous, the 'stain-resistant' couch stained the first time someone looked at it.", "expected": "negative"}
+{"input": "Oh good, the printer's out of ink again, right on cue for my deadline. Reliable.", "expected": "negative"}
+{"input": "Shockingly, the budget earbuds I bought as a joke sound better than my expensive ones.", "expected": "positive"}
+{"input": "Great, the 'one-size-fits-all' shirt fits absolutely no one on this planet.", "expected": "negative"}
+{"input": "Ugh, now I'm that person who won't shut up about a blender. It's that good.", "expected": "positive"}
+{"input": "Perfect, a hotel that charges for Wi-Fi so slow you could fax faster.", "expected": "negative"}
+{"input": "Oh delightful, the wheels fell off the 'premium' suitcase on its maiden trip.", "expected": "negative"}
+{"input": "Wow, an actually comfortable office chair. I'm devastated I have no complaints.", "expected": "positive"}
+{"input": "Lovely, the 'fresh' salad came with a side of someone else's hair. Five stars.", "expected": "negative"}
+{"input": "Sure, nothing beats a fitness tracker that thinks sleeping is 12,000 steps.", "expected": "negative"}
+{"input": "Terribly inconvenient, really, how this thing just refuses to break no matter what.", "expected": "positive"}
+{"input": "Oh brilliant, tech support whose only advice is to turn it off and give up.", "expected": "negative"}

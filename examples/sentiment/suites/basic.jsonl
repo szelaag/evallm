@@ -1,0 +1,80 @@
+{"input": "Absolutely love this blender, it crushes ice in seconds!", "expected": "positive"}
+{"input": "Terrible hotel. Dirty sheets and rude staff.", "expected": "negative"}
+{"input": "The package arrived on Tuesday in a plain cardboard box.", "expected": "neutral"}
+{"input": "Best pizza I've had in years — perfect crust and generous toppings.", "expected": "positive"}
+{"input": "Broke after one day. Complete waste of money.", "expected": "negative"}
+{"input": "The manual is available in English, German, and French.", "expected": "neutral"}
+{"input": "These running shoes are incredibly comfortable, my feet feel amazing.", "expected": "positive"}
+{"input": "Awful customer service, they never answered a single email.", "expected": "negative"}
+{"input": "The laptop comes with 16GB of RAM and a 512GB SSD.", "expected": "neutral"}
+{"input": "Fantastic little cafe, the flat white was outstanding.", "expected": "positive"}
+{"input": "Cheap plastic that cracked the moment I opened the box.", "expected": "negative"}
+{"input": "The store opens at 9am and closes at 6pm on weekdays.", "expected": "neutral"}
+{"input": "This moisturizer left my skin so soft and glowing, highly recommend.", "expected": "positive"}
+{"input": "Horrible experience, the food was cold and tasteless.", "expected": "negative"}
+{"input": "The subscription renews automatically every twelve months.", "expected": "neutral"}
+{"input": "Superb noise cancellation, these headphones are worth every penny.", "expected": "positive"}
+{"input": "Worst airline ever, they lost my luggage and shrugged it off.", "expected": "negative"}
+{"input": "The dress is available in sizes small through extra large.", "expected": "neutral"}
+{"input": "Delicious meal and the waiter was so friendly, we'll be back.", "expected": "positive"}
+{"input": "The app crashes constantly, totally unusable garbage.", "expected": "negative"}
+{"input": "It's a grey sofa with wooden legs and two cushions.", "expected": "neutral"}
+{"input": "Amazing battery life, my phone easily lasts two full days.", "expected": "positive"}
+{"input": "Extremely disappointed, the jacket fell apart after one wash.", "expected": "negative"}
+{"input": "The invoice was sent to the email address on file.", "expected": "neutral"}
+{"input": "Wonderful stay, the room was spotless and the view was breathtaking.", "expected": "positive"}
+{"input": "Do not buy this. It stopped charging within a week.", "expected": "negative"}
+{"input": "The router supports both 2.4GHz and 5GHz bands.", "expected": "neutral"}
+{"input": "This coffee maker is a game changer, best purchase all year.", "expected": "positive"}
+{"input": "Rude driver, late delivery, and the box was crushed.", "expected": "negative"}
+{"input": "The warranty covers parts and labor for two years.", "expected": "neutral"}
+{"input": "Gorgeous design and buttery smooth performance, I'm thrilled.", "expected": "positive"}
+{"input": "Cheaply made and overpriced, returned it immediately.", "expected": "negative"}
+{"input": "The gym has treadmills, free weights, and a small pool.", "expected": "neutral"}
+{"input": "Such a cozy restaurant, the pasta was absolutely divine.", "expected": "positive"}
+{"input": "Nightmare of a purchase, the screen was cracked on arrival.", "expected": "negative"}
+{"input": "The keyboard connects via Bluetooth or a USB cable.", "expected": "neutral"}
+{"input": "Love these jeans, they fit perfectly and the fabric is soft.", "expected": "positive"}
+{"input": "Disgusting room, there was mold on the bathroom ceiling.", "expected": "negative"}
+{"input": "The flight departs at 7:45 and arrives around noon.", "expected": "neutral"}
+{"input": "Incredible flavor and fast service, this place never disappoints.", "expected": "positive"}
+{"input": "The vacuum lost suction after a month, junk product.", "expected": "negative"}
+{"input": "This model is available in black, silver, and blue.", "expected": "neutral"}
+{"input": "Brilliant camera, the photos are crisp and the colors pop.", "expected": "positive"}
+{"input": "Terrible fit and the zipper broke on day two.", "expected": "negative"}
+{"input": "The hotel is a ten-minute walk from the train station.", "expected": "neutral"}
+{"input": "Outstanding software, it saved me hours of work every week.", "expected": "positive"}
+{"input": "Freezing cold food and a forty-minute wait, never again.", "expected": "negative"}
+{"input": "Payment can be made by card, cash, or bank transfer.", "expected": "neutral"}
+{"input": "This tent is fantastic, kept us bone dry through the storm.", "expected": "positive"}
+{"input": "Useless instructions and missing screws, awful kit.", "expected": "negative"}
+{"input": "The tablet weighs about 460 grams and has a 10-inch screen.", "expected": "neutral"}
+{"input": "Delightful little bakery, the croissants melt in your mouth.", "expected": "positive"}
+{"input": "The speaker sounds tinny and distorts at high volume, garbage.", "expected": "negative"}
+{"input": "The event runs from Friday evening to Sunday afternoon.", "expected": "neutral"}
+{"input": "Excellent build quality, this watch feels premium and looks stunning.", "expected": "positive"}
+{"input": "Horrible smell out of the box and it never went away, avoid.", "expected": "negative"}
+{"input": "The order contained two shirts, a belt, and a pair of socks.", "expected": "neutral"}
+{"input": "So happy with this mattress, best sleep I've had in years.", "expected": "positive"}
+{"input": "The charger stopped working after three days, total ripoff.", "expected": "negative"}
+{"input": "The parking lot is located behind the main building.", "expected": "neutral"}
+{"input": "Fantastic haircut, the stylist really listened to what I wanted.", "expected": "positive"}
+{"input": "Bland, greasy, and cold — one of the worst meals I've had.", "expected": "negative"}
+{"input": "The printer uses standard ink cartridges available in most stores.", "expected": "neutral"}
+{"input": "This backpack is amazing, tons of pockets and super durable.", "expected": "positive"}
+{"input": "The heels snapped off after wearing them once, terrible quality.", "expected": "negative"}
+{"input": "Check-in is at 3pm and checkout is at 11am.", "expected": "neutral"}
+{"input": "Loved the movie night setup, the projector image was crystal clear.", "expected": "positive"}
+{"input": "Slow service, wrong order, and a sticky table. Skip this place.", "expected": "negative"}
+{"input": "The plan includes 50GB of storage and unlimited email accounts.", "expected": "neutral"}
+{"input": "This knife set is superb, razor sharp and beautifully balanced.", "expected": "positive"}
+{"input": "The fabric pilled after one wear, cheap and disappointing.", "expected": "negative"}
+{"input": "The conference will be held in Hall B on the second floor.", "expected": "neutral"}
+{"input": "Wonderful hosts and a spotless apartment, five stars easily.", "expected": "positive"}
+{"input": "The blender leaked all over my counter, what a mess, awful.", "expected": "negative"}
+{"input": "The bike comes in three frame sizes and two colors.", "expected": "neutral"}
+{"input": "Delicious coffee and a lovely atmosphere, my new favorite spot.", "expected": "positive"}
+{"input": "The screen went black after a week and support ignored me.", "expected": "negative"}
+{"input": "The recipe serves four and takes about thirty minutes.", "expected": "neutral"}
+{"input": "This jacket is perfect, warm, lightweight, and stylish.", "expected": "positive"}
+{"input": "Terrible stitching came undone almost immediately, do not recommend.", "expected": "negative"}

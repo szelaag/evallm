@@ -1,0 +1,80 @@
+{"input": "The battery lasts about four hours, though the box promised eight.", "expected": "negative"}
+{"input": "Took three weeks to arrive, but the quality made up for it entirely.", "expected": "positive"}
+{"input": "It does exactly what the listing says, nothing more, nothing less.", "expected": "neutral"}
+{"input": "The steak was cooked well, yet they forgot my side and never brought it.", "expected": "negative"}
+{"input": "Not the prettiest design, but it has outlasted every other one I've owned.", "expected": "positive"}
+{"input": "It's the third model in the series; feels about the same as the last one.", "expected": "neutral"}
+{"input": "Sound quality is fine, but the earbuds fall out every time I jog.", "expected": "negative"}
+{"input": "I was skeptical at the price, and somehow it exceeded all my expectations.", "expected": "positive"}
+{"input": "The hotel was clean and the location central; breakfast was extra.", "expected": "neutral"}
+{"input": "The coat kept me warm, though a button fell off within the first week.", "expected": "negative"}
+{"input": "Setup took a while to figure out, but now I can't imagine working without it.", "expected": "positive"}
+{"input": "It arrived in the standard packaging with a charger and a short manual.", "expected": "neutral"}
+{"input": "Great picture, but the remote stopped responding after a couple of days.", "expected": "negative"}
+{"input": "Nothing flashy about it, just reliable performance day after day.", "expected": "positive"}
+{"input": "The portions matched the menu description and the bill matched the portions.", "expected": "neutral"}
+{"input": "Comfortable seats, but the legroom on the flight was almost nonexistent.", "expected": "negative"}
+{"input": "It's heavier than I expected, which turned out to make it feel far sturdier.", "expected": "positive"}
+{"input": "The software runs on Windows and Mac and updates roughly once a month.", "expected": "neutral"}
+{"input": "The room had a nice view, but the AC rattled all night and I barely slept.", "expected": "negative"}
+{"input": "I almost returned it on day one, and now it's the tool I reach for most.", "expected": "positive"}
+{"input": "The paint color is close to the photo, maybe a shade lighter in person.", "expected": "neutral"}
+{"input": "Fast shipping, but two of the six glasses arrived shattered.", "expected": "negative"}
+{"input": "Plain packaging, no frills, and honestly the best value I've found all year.", "expected": "positive"}
+{"input": "It measures 30 by 20 centimeters, about what the dimensions listed suggested.", "expected": "neutral"}
+{"input": "The food tasted good, but we waited over an hour past our reservation time.", "expected": "negative"}
+{"input": "The interface looks dated, yet everything I need is two clicks away.", "expected": "positive"}
+{"input": "They swapped the blue one for the grey one; the size is identical.", "expected": "neutral"}
+{"input": "The fabric is soft, but it shrank a full size after the first gentle wash.", "expected": "negative"}
+{"input": "I didn't expect much from a budget brand, and it has quietly impressed me.", "expected": "positive"}
+{"input": "The device pairs over Bluetooth and also has a headphone jack.", "expected": "neutral"}
+{"input": "Lovely staff, but the elevator was broken for the whole three-day stay.", "expected": "negative"}
+{"input": "It's not the fastest on the market, but it hasn't crashed once in months.", "expected": "positive"}
+{"input": "The menu lists twelve mains and a handful of daily specials.", "expected": "neutral"}
+{"input": "Good coffee, but they got my order wrong three visits in a row.", "expected": "negative"}
+{"input": "The stitching looks rough up close, yet these boots refuse to wear out.", "expected": "positive"}
+{"input": "The plan renews yearly and includes the same features as the monthly one.", "expected": "neutral"}
+{"input": "The screen is bright and sharp, but the battery drains before lunchtime.", "expected": "negative"}
+{"input": "I bought it as a stopgap and ended up loving it more than my old one.", "expected": "positive"}
+{"input": "The chair came flat-packed with an Allen key and a printed guide.", "expected": "neutral"}
+{"input": "Tasty dishes, but the table next to the kitchen door was unbearably loud.", "expected": "negative"}
+{"input": "It doesn't look like much, but it's survived three drops onto concrete.", "expected": "positive"}
+{"input": "The tour lasts ninety minutes and covers the old town and the harbor.", "expected": "neutral"}
+{"input": "The delivery was prompt, but the driver left it out in the rain.", "expected": "negative"}
+{"input": "Basic features, no fancy extras, and it just works exactly as promised.", "expected": "positive"}
+{"input": "There are three tiers, and the middle one matches what we had before.", "expected": "neutral"}
+{"input": "The pillows were plush, but the walls were so thin I heard every footstep.", "expected": "negative"}
+{"input": "I expected a gimmick and got a genuinely useful bit of kit instead.", "expected": "positive"}
+{"input": "The kit includes four screws, two brackets, and a small wrench.", "expected": "neutral"}
+{"input": "The app is easy to use, but it logged me out and lost my draft twice.", "expected": "negative"}
+{"input": "Understated and a bit boring to look at, yet flawless after a year of daily use.", "expected": "positive"}
+{"input": "The cafe seats about twenty and has a small patio out back.", "expected": "neutral"}
+{"input": "Great flavor, but the portion barely covered half the plate for the price.", "expected": "negative"}
+{"input": "The instructions were sparse, but the thing practically assembled itself.", "expected": "positive"}
+{"input": "It's the refreshed version, same shape, slightly different port layout.", "expected": "neutral"}
+{"input": "The mattress felt great in the store, but I wake up with a sore back now.", "expected": "negative"}
+{"input": "Nobody would call it stylish, and yet I've never owned a comfier pair.", "expected": "positive"}
+{"input": "The shipment included the cable, the adapter, and a warranty card.", "expected": "neutral"}
+{"input": "Friendly service, but the soup arrived lukewarm both times we ordered it.", "expected": "negative"}
+{"input": "Took a couple of tries to dial in the settings; now it's absolutely perfect.", "expected": "positive"}
+{"input": "The venue holds two hundred people and has parking for about fifty cars.", "expected": "neutral"}
+{"input": "The photos are decent in daylight, but night shots come out grainy and dark.", "expected": "negative"}
+{"input": "I bought the cheapest one on the shelf and it's outperformed the pricey rivals.", "expected": "positive"}
+{"input": "The membership covers two locations and freezes over the holidays.", "expected": "neutral"}
+{"input": "The desk is sturdy, but it arrived with a deep scratch across the top.", "expected": "negative"}
+{"input": "It's slower to heat than I'd like, but the food comes out perfect every time.", "expected": "positive"}
+{"input": "The box contained the console, one controller, and two cables.", "expected": "neutral"}
+{"input": "The view was stunning, but the restaurant charged for tap water and bread.", "expected": "negative"}
+{"input": "Looks like a toy, works like a tank; I've stopped worrying about breaking it.", "expected": "positive"}
+{"input": "The service call is scheduled between eight and noon on Thursday.", "expected": "neutral"}
+{"input": "Comfortable ride, but the fuel gauge reads empty with a quarter tank left.", "expected": "negative"}
+{"input": "I only bought it for the discount, and it's become my everyday favorite.", "expected": "positive"}
+{"input": "The trial runs for fourteen days and then rolls into the standard rate.", "expected": "neutral"}
+{"input": "The pizza was excellent, but they forgot the drinks on both of our orders.", "expected": "negative"}
+{"input": "Unremarkable looks aside, this thing has never once let me down.", "expected": "positive"}
+{"input": "The apartment has one bedroom, a small kitchen, and a shared laundry room.", "expected": "neutral"}
+{"input": "The headphones sound rich, but the left cup started crackling within a month.", "expected": "negative"}
+{"input": "It's not intuitive at first, but once it clicks you fly through the work.", "expected": "positive"}
+{"input": "The upgrade keeps the old layout and adds a second USB port.", "expected": "neutral"}
+{"input": "The hotel bar was lovely, but the room safe was broken the entire week.", "expected": "negative"}
+{"input": "Ugly as sin and twice as dependable; I'd buy it again in a heartbeat.", "expected": "positive"}
