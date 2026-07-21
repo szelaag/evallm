@@ -25,6 +25,7 @@ def _write_report(run: RunResult, base_dir: Path) -> None:
 
 
 def with_config(config_path: str, action: Callable[[LoadedConfig], None]) -> None:
+    """Load a config from config_path and pass it to action, translating errors to CLI messages."""
     try:
         loaded = load_config(Path(config_path))
     except FileNotFoundError:
@@ -160,6 +161,6 @@ def show(run_id: str, db: str | None, cases: bool, report: bool) -> None:
         raise click.ClickException(str(e))
     if run is None:
         raise click.ClickException(f"No run found matching '{run_id}'")
+    show_run_results(run, cases)
     if report:
         _write_report(run, Path.cwd())
-    show_run_results(run, cases)
