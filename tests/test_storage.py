@@ -47,6 +47,7 @@ def _assert_run_equal(loaded: RunResult, expected: RunResult) -> None:
     assert len(loaded.suites) == len(expected.suites)
     assert loaded.suites[0].passed_count == expected.suites[0].passed_count
 
+
 def test_sqlite_storage_round_trip(tmp_path):
 
     run = _sample_run()

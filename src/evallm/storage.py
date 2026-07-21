@@ -8,6 +8,7 @@ from datetime import datetime
 
 class AmbiguousPrefixError(Exception):
     """Raised when a run ID prefix matches more than one run."""
+
     pass
 
 
@@ -143,7 +144,9 @@ class SQLiteStorage(Storage):
 
     def get_runs(self, limit: int = 20) -> list[RunResult]:
         runs: list[RunResult] = []
-        cursor = self.conn.execute("SELECT * FROM runs ORDER BY timestamp DESC LIMIT ?", (limit, ))
+        cursor = self.conn.execute(
+            "SELECT * FROM runs ORDER BY timestamp DESC LIMIT ?", (limit,)
+        )
         rows = cursor.fetchall()
         for row in rows:
             runs.append(
@@ -154,7 +157,7 @@ class SQLiteStorage(Storage):
                 )
             )
         return runs
-    
+
     def get_run_by_prefix(self, prefix: str) -> RunResult | None:
         pattern = prefix + "%"
         cursor = self.conn.execute("SELECT * FROM runs WHERE id LIKE ?", (pattern,))
@@ -171,7 +174,6 @@ class SQLiteStorage(Storage):
                 timestamp=datetime.fromisoformat(row[1]),
                 suites=self._get_suites(row[0]),
             )
-        
 
 
 def create_storage(db_path: Path) -> Storage:

@@ -47,14 +47,15 @@ def validate(config_path: str) -> None:
 @cli.command()
 @click.argument("config_path")
 @click.option(
-    "--db", "-d", default=None, help="Path to the database file (default: alongside config)"
+    "--db",
+    "-d",
+    default=None,
+    help="Path to the database file (default: alongside config)",
 )
 @click.option(
     "--cases", "-c", is_flag=True, help="Show detailed results of cases in terminal"
 )
-@click.option(
-    "--report", "-r", is_flag=True, help="Generate HTML report in results/"
-)
+@click.option("--report", "-r", is_flag=True, help="Generate HTML report in results/")
 def run(config_path: str, db: str | None, cases: bool, report: bool) -> None:
     """Run evaluation suites and print results."""
 
@@ -75,7 +76,7 @@ def run(config_path: str, db: str | None, cases: bool, report: bool) -> None:
             generate_report(result, report_path)
             show_message(f"Report saved to [bright_green bold]{report_path}[/]")
 
-        show_run_results(result, cases) # cases=True : detailed
+        show_run_results(result, cases)  # cases=True : detailed
 
     with_config(config_path, do_run)
 

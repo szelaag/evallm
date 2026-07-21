@@ -10,9 +10,11 @@ class ConfusionMatrix:
     @property
     def total(self) -> int:
         return sum(count for row in self.matrix.values() for count in row.values())
+
     @property
     def correct(self) -> int:
         return sum(self.matrix[c][c] for c in self.classes)
+
     @property
     def accuracy(self) -> float:
         if self.total == 0:
@@ -33,31 +35,37 @@ def build_confusion_matrix(suite: SuiteResult) -> ConfusionMatrix:
 
     for case in suite.cases:
         matrix[case.expected][case.actual] += 1
-    
+
     return ConfusionMatrix(matrix=matrix, classes=classes)
-
-
 
 
 if __name__ == "__main__":
     from evallm.models import SuiteResult, CaseResult, EvalResult
+
     def case(exp, act):
         passed = exp == act
-        return CaseResult(id="x", expected=exp, actual=act,
-                        eval_result=EvalResult(passed=passed, score=float(passed)))
+        return CaseResult(
+            id="x",
+            expected=exp,
+            actual=act,
+            eval_result=EvalResult(passed=passed, score=float(passed)),
+        )
 
-    suite = SuiteResult(name="sentiment", cases=[
-        case("positive", "positive"),   # 1
-        case("positive", "negative"),   # 2
-        case("negative", "negative"),   # 3
-        case("neutral",  "positive"),   # 4
-        case("positive", "positive"),   # 5
-        case("negative", "negative"),   # 6
-        case("neutral",  "neutral"),    # 7
-        case("positive", "neutral"),    # 8
-        case("negative", "positive"),   # 9
-        case("neutral",  "positive"),   # 10
-    ])
+    suite = SuiteResult(
+        name="sentiment",
+        cases=[
+            case("positive", "positive"),  # 1
+            case("positive", "negative"),  # 2
+            case("negative", "negative"),  # 3
+            case("neutral", "positive"),  # 4
+            case("positive", "positive"),  # 5
+            case("negative", "negative"),  # 6
+            case("neutral", "neutral"),  # 7
+            case("positive", "neutral"),  # 8
+            case("negative", "positive"),  # 9
+            case("neutral", "positive"),  # 10
+        ],
+    )
 
     matrix = build_confusion_matrix(suite)
 

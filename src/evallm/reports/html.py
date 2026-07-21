@@ -11,11 +11,11 @@ def generate_report(run: RunResult, output_path: Path) -> None:
 
     template = env.get_template("report.html.j2")
 
-
     matrices = {suite.name: build_confusion_matrix(suite) for suite in run.suites}
 
-    html = template.render(run=run, matrices = matrices)
+    html = template.render(run=run, matrices=matrices)
     output_path.write_text(html)
+
 
 if __name__ == "__main__":
     from datetime import datetime
