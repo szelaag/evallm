@@ -32,6 +32,15 @@ def get_color(percent: float) -> str:
         return "bright_red"
 
 
+def show_message(message: str) -> None:
+    """Takes the message and prints it
+    Args:
+        Str with rich formating
+    """
+    console.print()
+    console.print(message)
+
+
 def get_progress_bar(percent: float, color: str | None = None, width: int = 12) -> str:
     """Returns colored progress bar string"""
     full = round(percent * width)
@@ -79,10 +88,21 @@ def show_run_results(run_result: RunResult, show_cases: bool = False) -> None:
             console.print(table)
 
 
-def show_message(message: str) -> None:
-    """Takes the message and prints it
-    Args:
-        Str with rich formating
-    """
-    console.print()
-    console.print(message)
+def show_history(runs: list[RunResult]) -> None:
+    if not runs:
+        show_message("[bold]No runs yet[/]")
+        return
+    table = Table(header_style="bold", box=box.SIMPLE_HEAVY)
+    table.add_column("ID", justify="center")
+    table.add_column("Timestamp", justify="center")
+    table.add_column("Score", justify="center")
+    table.add_column("Pass rate", justify="center")
+    for run in runs:
+        color = get_color(run.pass_rate)
+        table.add_row(
+            f"[bold]{str(run.id)[:8]}[/]",
+            f"[dim]{run.timestamp.strftime('%Y-%m-%d %H:%M')}[/]",
+            f"[{color}]{run.passed_count} [dim]/[/] {run.total}[/]",
+            f"[{color}]{run.pass_rate:.0%}[/]",
+        )
+    console.print(table)
