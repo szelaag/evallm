@@ -1,5 +1,5 @@
 [project]
-name = "evallm"
+name = "evallm-cli"
 description = "LLM evaluation framework for developers"
 readme = "README.md"
 license = "MIT"

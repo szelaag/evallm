@@ -7,7 +7,7 @@
 ## Installation
 
 ```bash
-pip install evallm
+pip install evallm-cli
 ```
 
 evallm requires Python 3.10+ and an Anthropic API key.
